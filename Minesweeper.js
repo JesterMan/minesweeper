@@ -1,19 +1,28 @@
 board = []
 var boardCount =8,
- 	table = '<table>';
+ 	playSpace = '<table>';
+
 for (var i = 0; i < boardCount; i++) {
 	board.push([]);
-	 table+="<tr>";
 	for (var x =0; x < boardCount; x++) {
 		board[i].push(new tile());
-    	table+='<td></td>';
 	};
-	table+="</tr>";
 	
 };
-table+="</table>"
-debugger;
-$(".game").html(table);
+
+for (var i = 0; i < boardCount; i++) {
+	 playSpace+="<tr>";
+	for (var x =0; x < boardCount; x++) {
+    	playSpace+='<td id="board['+[i]+']['+[x]+']">x</td>';
+   
+	};
+	playSpace+="</tr>";
+	
+};
+
+playSpace+="</table>"
+
+$(".game").html(playSpace);
 
 function tile() {
 	this.beenClicked = false;
