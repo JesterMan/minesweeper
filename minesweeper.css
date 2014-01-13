@@ -2,9 +2,34 @@ table {
 	border: 2px;
 }
 td {
-	background-color: grey;
-	height: 20px;
-	width: 20px;
-	margin: 15px;
+	
+	height: 45px;
+	width: 45px;
+	margin: 16px;
 	text-align: center;
+	background-color:#f1f1f1;
+    border-width:3px;
+    border-style:solid;
+    border-bottom-color:#a1a1a1;
+    border-right-color:#a1a1a1;
+    border-top-color:#d1d1d1;
+    border-left-color:#d1d1d1;
+    border-radius:5px;
+}
+#topBanner {
+	border: 1px;
+	border-radius: 3px;
+	font-weight: bold;
+	background-color: green;
+
+}
+.Bomb {
+	background-color: red;
+}
+.controls {
+
+}
+.known {
+	background-color: grey;
+	border: none;
 }
