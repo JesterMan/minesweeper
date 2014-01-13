@@ -2,181 +2,147 @@ board = []
 bombSet =[]
 marked=[]
 var boardCount =8,
-	bombCount = 10,
-	bombed=false,
-	mineCount,
-	underInspection,
-	playSpace;
-	// correctMark=0,
-	// markedBomb=0;
- 	
+        bombCount = 10,
+        bombed=false,
+        mineCount,
+        playSpace;
+         
 
 
 function newBoard() {
-	correctMark=0;
-	markedBomb=0;
-	$('#gameBoard').remove();
-	debugger
-for (var i = 0; i < boardCount; i++) {
-	board.push([]);
-	for (var x =0; x < boardCount; x++) {
-		board[i].push(new tile());
-	};
+    correctMark=0;
+    markedBomb=0;
+    $('#gameBoard').remove();
+    for (var i = 0; i < boardCount; i++) {
+        board.push([]);
+        for (var x =0; x < boardCount; x++) {
+                board[i].push(new tile());
+        };
+    };
+    //build html board
+    var playSpace = '<table id="gameBoard">';
+    for (var i = 0; i < boardCount; i++) {
+        playSpace+="<tr>";
+        for (var x =0; x < boardCount; x++) {
+            playSpace+='<td>?</td>';
+        };
+        playSpace+="</tr>";
+    };
 
+    playSpace+="</table>";
+    $(".game").append(playSpace);
+
+    function tile() {
+        this.beenClicked = false;
+        this.hasBomb = false;
+    }
+
+    for (var i = 0; i < bombCount;) {
+        var x = Math.floor((Math.random()*7)+1),
+            y = Math.floor((Math.random()*7)+1);
+        if (board[x][y].hasBomb==false) {
+            board[x][y].hasBomb=true;
+            console.log("x:"+x+"  y:"+y)
+            bombSet.push([x,y])
+            i++;
+        }
+    };
 };
-
-//build html board
-var playSpace = '<table id="gameBoard">';
-for (var i = 0; i < boardCount; i++) {
-	 playSpace+="<tr>";
-	for (var x =0; x < boardCount; x++) {
-    	playSpace+='<td>?</td>';
-	};
-	playSpace+="</tr>";
-};
-playSpace+="</table>"
-
-function tile() {
-	this.beenClicked = false;
-	this.hasBomb = false;
-}
-
-for (var i = 0; i < bombCount;) {
-	var x = Math.floor((Math.random()*7)+1),
-		y = Math.floor((Math.random()*7)+1);
-		if (board[x][y].hasBomb==false) {
-			board[x][y].hasBomb=true;
-			console.log("x:"+x+"  y:"+y)
-			bombSet.push([x,y])
-			i++;
-		}
-};
-	$(".game").append(playSpace);
-	
+        
 
 function blindClick(){
-		 
-		var col=$(this).parent().children().index($(this)),
-			row=$(this).parent().parent().children().index($(this).parent());
-		clickTile(row,col);
+    var col=$(this).parent().children().index($(this)),
+        row=$(this).parent().parent().children().index($(this).parent());
+    clickTile(row,col);
 };
 
 $( "td" ).click(blindClick);
 
 $("td").hover(function(){
-		$(this).toggleClass('target')
+    $(this).toggleClass('target')
+        });
 
-	});
 $(document).one("keypress", function(){
-		console.log("markedone");
-		debugger
-		if (markedBomb != 10) {
-		// if ($(".target").html() == '?') { // ===============
-			$(".target").html('X');
-			$(".target").unbind('click');
-			$('.target').beenClicked=true;
-			// marked.pop([$(".target").parent().parent().children().index($(".target").parent()), 
-			// 	$(".target").parent().children().index($(".target")) ]);
-		// }
-		// else {
-		// 	$(".target").html('?');
-		// 	$(".target").bind('click', blindClick);
-		// 	$('.target').beenClicked=false;
+    if (markedBomb != 10) {
+        $(".target").html('X').unbind('click').beenClicked=true;
+        var row = $(".target").parent().parent().children().index($(".target").parent()),
+            col = $(".target").parent().children().index($(".target"));
+        $('.target').addClass('Bomb');
+       if (board[row][col].hasBomb){
+            correctMark++;
+        }
+        markedBomb++;
+    }  
+});
 
-		// }
-
-		var row = $(".target").parent().parent().children().index($(".target").parent()),
-			col = $(".target").parent().children().index($(".target"));
-
-			$('.target').addClass('Bomb');
-			
-			marked.push([row], [col]);
-			
-			if (board[row][col].hasBomb){
-				correctMark++;
-			}
-		markedBomb++;
-	}
-		
-	});
-};
 $(document).ready (function(){ 
-	newBoard();
-
-	$("#newGame").click(function(){ 
-	newBoard();
-});
-
-$("#validate").click(function(){
-
-	if (correctMark==bombCount){
-		alert("you win!");
-	}
-	else {
-		alert("not quite")
-	}
-
-
-});
-
+    newBoard();
+    $("#newGame").click(function(){ 
+        newBoard();
+    });
+    $("#validate").click(function(){
+        if (correctMark==bombCount){
+            alert("you win!");
+        }
+        else {
+            alert("not quite")
+        }
+    });
 });
 
 
-function clickTile(row,col) {	
-	if (board[row][col].hasBomb){
-		$("tr:eq("+row+") td:eq("+col+")").text("X");
-		$("tr:eq("+row+") td:eq("+col+")").addClass('Bomb');
-		$("td").unbind('click');
-		alert("Boom! Game over.")
-	}
-	else{	
-		board[row][col].beenClicked=true;
-		mineCount=countMine(row,col);
-		if (mineCount==0){
-			$("tr:eq("+row+") td:eq("+col+")").addClass('known');
-			$("tr:eq("+row+") td:eq("+col+")").text("");
-			testNeighbors(row,col);
-			//run more tests
-		}
-		else {
-			$("tr:eq("+row+") td:eq("+col+")").text(mineCount);
-			$("tr:eq("+row+") td:eq("+col+")").addClass('known');
-		}
-	}	
+function clickTile(row,col) {        
+    if (board[row][col].hasBomb){
+        $("tr:eq("+row+") td:eq("+col+")").text("X");
+        $("tr:eq("+row+") td:eq("+col+")").addClass('Bomb');
+        $("td").unbind('click');
+        alert("Boom! Game over.")
+    }
+    else{        
+        board[row][col].beenClicked=true;
+        mineCount=countMine(row,col);
+        if (mineCount==0){
+            $("tr:eq("+row+") td:eq("+col+")").addClass('known');
+            $("tr:eq("+row+") td:eq("+col+")").text("");
+            testNeighbors(row,col);
+            //run more tests
+        }
+        else {
+            $("tr:eq("+row+") td:eq("+col+")").text(mineCount);
+            $("tr:eq("+row+") td:eq("+col+")").addClass('known');
+        }
+    }        
 };
 
 
 function countMine(row,col){
-	var mineCount=0;
-	for (var y=-1; y <=1;y++){
-		for (var z = -1; z<=1;z++){
-			if (checkBoundaries(row+y,col+z) && board[row+y][col+z].hasBomb){
-				mineCount++;
-			}
-		}
-	}
-	return mineCount;
+    var mineCount=0;
+    for (var y=-1; y <=1;y++){
+        for (var z = -1; z<=1;z++){
+            if (checkBoundaries(row+y,col+z) && board[row+y][col+z].hasBomb){
+                mineCount++;
+            }
+        }
+    }
+        return mineCount;
 }
 
 function checkBoundaries(row,col){
-	if (row<0 || col<0 || row>7 || col>7){
-		return false;
-	}
-	else {
-		return true;
-	}
+    if (row<0 || col<0 || row>7 || col>7){
+        return false;
+    }
+    else {
+        return true;
+    }
 }
 
 function testNeighbors(row,col){
-	for (var y=-1; y <=1;y++){
-		for (var z = -1; z<=1;z++){
-			if (checkBoundaries(row+y,col+z) && !board[row+y][col+z].beenClicked){
-				clickTile(row+y,col+z);
-			}
-		
-			}
-		}
-	}
-
-
+    for (var y=-1; y <=1;y++){
+        for (var z = -1; z<=1;z++){
+            if (checkBoundaries(row+y,col+z) && !board[row+y][col+z].beenClicked){
+                clickTile(row+y,col+z);
+            }
+        }
+    }
+}
 
