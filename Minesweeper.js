@@ -7,8 +7,6 @@ var boardCount =8,
         mineCount,
         playSpace;
          
-
-
 function newBoard() {
     correctMark=0;
     markedBomb=0;
@@ -23,6 +21,7 @@ function newBoard() {
     };
     //build html board
     var playSpace = '<table id="gameBoard">';
+
     for (var i = 0; i < boardCount; i++) {
         playSpace+="<tr>";
         for (var x =0; x < boardCount; x++) {
@@ -32,6 +31,7 @@ function newBoard() {
     };
 
     playSpace+="</table>";
+
     $(".game").append(playSpace);
 
     function tile() {
@@ -48,9 +48,7 @@ function newBoard() {
             bombSet.push([x,y])
             i++;
         }
-    };
-
-        
+    }; 
 
     function blindClick(){
         var col=$(this).parent().children().index($(this)),
@@ -80,9 +78,11 @@ $(document).keypress(function(){
 
 $(document).ready (function(){ 
     newBoard();
+    
     $("#newGame").click(function(){ 
         newBoard();
     });
+
     $("#validate").click(function(){
         if (correctMark==bombCount){
             alert("you win!");
@@ -91,6 +91,7 @@ $(document).ready (function(){
             alert("not quite")
         }
     });
+
     $("#powerOverwhelming").click(function(){
         for (var i = 0; i <bombSet.length; i++) {
             $("tr:eq("+bombSet[i][0]+") td:eq("+bombSet[i][1]+")").text("O").addClass('revealed');
