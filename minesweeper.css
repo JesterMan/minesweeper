@@ -8,7 +8,7 @@ td {
 	margin: 16px;
 	text-align: center;
 	background-color:#f1f1f1;
-    border-width:3px;
+    border-width:2px;
     border-style:solid;
     border-bottom-color:#a1a1a1;
     border-right-color:#a1a1a1;
@@ -24,7 +24,11 @@ td {
 
 }
 .Bomb {
-	background-color: red;
+	background-color: red !important;
+	border-bottom-color:#a1a1a1;
+    border-right-color:#a1a1a1;
+    border-top-color:#d1d1d1;
+    border-left-color:#d1d1d1;
 }
 .controls {
 
@@ -32,4 +36,7 @@ td {
 .known {
 	background-color: grey;
 	border: none;
+}
+.revealed {
+	background-color: #ffff94;
 }
