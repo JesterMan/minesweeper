@@ -1,16 +1,11 @@
-board = []
-bombSet =[]
-marked=[]
-var boardCount =8,
-        bombCount = 10,
-        bombed=false,
-        mineCount,
-        playSpace;
-         
+
+
+//start a new game
 function newBoard() {
-     $( "td" ).unbind('click');
-    correctMark=0;
-    markedBomb=0;
+    board = [] //used to created the html 
+    bombSet =[] //where the bombs are, used to mark them in god mode
+    correctMark=0; //count of how many of the markers are correctly place
+    markedBomb=0; //count of how many makers have been placed
     boardCount = document.getElementById('boardSize').value;
     bombCount = document.getElementById('bombin').value;
     $('#gameBoard').remove();
@@ -20,13 +15,13 @@ function newBoard() {
                 board[i].push(new tile());
         };
     };
-    //build html board
+//build html board
     var playSpace = '<table id="gameBoard">';
-debugger
     for (var i = 0; i < boardCount; i++) {
         playSpace+="<tr>";
         for (var x =0; x < boardCount; x++) {
             playSpace+='<td>?</td>';
+            
         };
         playSpace+="</tr>";
     };
@@ -40,17 +35,18 @@ debugger
         this.hasBomb = false;
     }
 
+//determine bomb placement
     for (var i = 0; i < bombCount;) {
         var x = Math.floor((Math.random()*7)+1),
             y = Math.floor((Math.random()*7)+1);
         if (board[x][y].hasBomb==false) {
             board[x][y].hasBomb=true;
-            console.log("x:"+x+"  y:"+y)
             bombSet.push([x,y])
             i++;
         }
     }; 
 
+//triggers the check tile funcion
     function blindClick(){
         var col=$(this).parent().children().index($(this)),
             row=$(this).parent().parent().children().index($(this).parent());
@@ -64,6 +60,7 @@ debugger
     });
 }
 
+//mark the bombs
 $(document).keypress(function(){
     if (markedBomb != 10) {
         $(".target").html('X').unbind('click').beenClicked=true;
@@ -80,10 +77,11 @@ $(document).keypress(function(){
 $(document).ready (function(){ 
     newBoard();
 
+//new game
     $("#newGame").click(function(){ 
         newBoard();
     });
-
+//check for victory
     $("#validate").click(function(){
         if (correctMark==bombCount){
             alert("you win!");
@@ -92,7 +90,7 @@ $(document).ready (function(){
             alert("not quite")
         }
     });
-
+//god mode
     $("#powerOverwhelming").click(function(){
         for (var i = 0; i <bombSet.length; i++) {
             $("tr:eq("+bombSet[i][0]+") td:eq("+bombSet[i][1]+")").text("O").addClass('revealed');
@@ -101,11 +99,10 @@ $(document).ready (function(){
 
 });
 
-
+//check a tile to see if it or it's neighbors have any bombs
 function clickTile(row,col) {        
     if (board[row][col].hasBomb){
-        $("tr:eq("+row+") td:eq("+col+")").text("X").addClass('Bomb');
-        $("td").unbind('click');
+        $("tr:eq("+row+") td:eq("+col+")").text("X").addClass('Bomb').unbind('click');;
         alert("Boom! Game over.")
     }
     else{        
@@ -132,7 +129,7 @@ function countMine(row,col){
             }
         }
     }
-        return mineCount;
+    return mineCount;
 }
 
 function checkBoundaries(row,col){
