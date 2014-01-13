@@ -8,6 +8,7 @@ var boardCount =8,
         playSpace;
          
 function newBoard() {
+     $( "td" ).unbind('click');
     correctMark=0;
     markedBomb=0;
     boardCount = document.getElementById('boardSize').value;
@@ -21,7 +22,7 @@ function newBoard() {
     };
     //build html board
     var playSpace = '<table id="gameBoard">';
-
+debugger
     for (var i = 0; i < boardCount; i++) {
         playSpace+="<tr>";
         for (var x =0; x < boardCount; x++) {
@@ -78,7 +79,7 @@ $(document).keypress(function(){
 
 $(document).ready (function(){ 
     newBoard();
-    
+
     $("#newGame").click(function(){ 
         newBoard();
     });
