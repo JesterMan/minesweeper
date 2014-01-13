@@ -47,22 +47,23 @@ function newBoard() {
             i++;
         }
     };
-};
+
         
 
-function blindClick(){
-    var col=$(this).parent().children().index($(this)),
-        row=$(this).parent().parent().children().index($(this).parent());
-    clickTile(row,col);
-};
+    function blindClick(){
+        var col=$(this).parent().children().index($(this)),
+            row=$(this).parent().parent().children().index($(this).parent());
+        clickTile(row,col);
+    };
 
-$( "td" ).click(blindClick);
+    $( "td" ).click(blindClick);
 
-$("td").hover(function(){
-    $(this).toggleClass('target')
-        });
+    $("td").hover(function(){
+        $(this).toggleClass('target');
+    });
+}
 
-$(document).one("keypress", function(){
+$(document).keypress(function(){
     if (markedBomb != 10) {
         $(".target").html('X').unbind('click').beenClicked=true;
         var row = $(".target").parent().parent().children().index($(".target").parent()),
