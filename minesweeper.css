@@ -24,6 +24,7 @@ td {
 	border-radius: 3px;
 	font-weight: bold;
 	text-align: center;
+	color: white;
 }
 .outer{
 	display: table;
@@ -38,6 +39,7 @@ td {
     border-left-color:#d1d1d1;
 }
 .controls {
+
 
 }
 .known {

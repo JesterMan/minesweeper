@@ -37,8 +37,9 @@ function newBoard() {
 
 //determine bomb placement
     for (var i = 0; i < bombCount;) {
-        var x = Math.floor((Math.random()*7)+1),
-            y = Math.floor((Math.random()*7)+1);
+        var x = Math.floor((Math.random()*boardCount)),
+            y = Math.floor((Math.random()*boardCount));
+            debugger
         if (board[x][y].hasBomb==false) {
             board[x][y].hasBomb=true;
             bombSet.push([x,y])
@@ -62,7 +63,7 @@ function newBoard() {
 
 //mark the bombs
 $(document).keypress(function(){
-    if (markedBomb != 10) {
+    if (markedBomb != bombCount) {
         $(".target").html('X').unbind('click').beenClicked=true;
         var row = $(".target").parent().parent().children().index($(".target").parent()),
             col = $(".target").parent().children().index($(".target"));
@@ -133,7 +134,7 @@ function countMine(row,col){
 }
 
 function checkBoundaries(row,col){
-    if (row<0 || col<0 || row>7 || col>7){
+    if (row<0 || col<0 || row>boardCount-1 || col>boardCount-1){
         return false;
     }
     else {
